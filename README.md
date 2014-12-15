@@ -46,8 +46,11 @@ Rate limit headers are:
 
 * 'X-RateLimit-Limit' - The total number of requests allowed.
 * 'X-RateLimit-Remaining' - The number of remaining requests.
+* 'X-RateLimit-Period' - The time period, in seconds, that the X-RateLimit-Limit applies to.
 
-If a request triggers multiple throttles, the gem will add headers for the throttle with the lowest number of remaining requests.
+  If a request triggers multiple throttles, the gem will add headers for the throttle with the lowest number of remaining requests.
+
+
 
 ## Contributing
 

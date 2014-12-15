@@ -13,8 +13,8 @@ module Rack
       attr_reader :app, :options
 
       def initialize(app, options = {})
-        @app = app
-        @options = default_options.merge(options)
+        @app      = app
+        @options  = default_options.merge(options)
       end
 
       def call(env)
@@ -53,12 +53,13 @@ module Rack
         throttle_data = throttle_data_closest_to_limit(env)
         headers['X-RateLimit-Limit']      = rate_limit_limit(throttle_data).to_s
         headers['X-RateLimit-Remaining']  = rate_limit_remaining(throttle_data).to_s
+        headers['X-RateLimit-Period']     = rate_limit_period(throttle_data).to_s
         headers
       end
 
       protected
 
-      # RateLimit upper limit from Rack::Attack
+      # RateLimit request limit from Rack::Attack
       #
       # env - Hash
       #
@@ -67,7 +68,16 @@ module Rack
         throttle_data[:limit]
       end
 
-      # RateLimit remaining request from Rack::Attack
+      # Rate-Period request limit from Rack::Attack
+      #
+      # env - Hash
+      #
+      # Returns Fixnum
+      def rate_limit_period(env)
+        env[rack_attack_key][throttle][:period]
+      end
+
+      # RateLimit remaining requests from Rack::Attack
       #
       # env - Hash
       #
